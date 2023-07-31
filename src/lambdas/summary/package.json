@@ -1,0 +1,21 @@
+{
+  "name": "summary",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/aws-lambda": "^8.10.117",
+    "@types/node": "^20.2.6",
+    "esbuild": "^0.18.0"
+  },
+  "scripts": {
+    "build": "esbuild index.ts --bundle --sourcemap --platform=node --target=es2020 --outfile=dist/index.js",
+    "dev": "esbuild index.ts --bundle --minify --sourcemap --platform=node --target=es2020 --outfile=dist/index.js --watch"
+  },
+  "dependencies": {
+    "@aws-sdk/client-s3": "^3.350.0",
+    "@aws-sdk/client-sqs": "^3.370.0"
+  }
+}

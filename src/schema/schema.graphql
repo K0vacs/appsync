@@ -1,0 +1,116 @@
+﻿schema {
+  query: Query
+  mutation: Mutation
+  subscription: Subscription
+}
+
+input CreateDataSourceInput {
+  conversationId: String!
+  customerId: String
+  callEnded: String
+  callStarted: String
+  featureSummary: String
+  meta: String
+  secondaryId: String
+  transcript: String
+}
+
+input UpdateDataSourceInput {
+  conversationId: String!
+  customerId: String
+  callEnded: String
+  callStarted: String
+  featureSummary: String
+  meta: String
+  secondaryId: String
+  transcript: String
+}
+
+type DataSource {
+  conversationId: String!
+  customerId: String!
+  callEnded: String
+  callStarted: String
+  featureSummary: String
+  meta: String
+  secondaryId: String
+  transcript: String
+}
+
+input CreateSummaryInput {
+  conversationId: String!
+  customerId: String!
+  summary: SummaryInput
+}
+
+input SummaryInput {
+  short: String
+  medium: String
+  long: String
+  category: String
+  callRecordingPermission: Boolean
+  objectives: [String]
+  issues: [String]
+  keywords: [String]
+  topics: [String]
+}
+
+type Summary {
+  conversationId: String!
+  customerId: String!
+  short: String
+  medium: String
+  long: String
+  category: String
+  callRecordingPermission: Boolean
+  objectives: [String]
+  issues: [String]
+  keywords: [String]
+  topics: [String]
+}
+
+type DataSourceConnection {
+  items: [DataSource]
+  nextToken: String
+}
+
+input TableDataSourceFilterInput {
+  customerId: TableStringFilterInput
+  callEnded: TableStringFilterInput
+}
+
+input TableStringFilterInput {
+  ne: String
+  eq: String
+  le: String
+  lt: String
+  ge: String
+  gt: String
+  contains: String
+  notContains: String
+  between: [String]
+  beginsWith: String
+}
+
+type Mutation {
+  createDataSource(input: CreateDataSourceInput!): DataSource
+  createSummary(input: CreateSummaryInput!): Summary
+  updateDataSource(input: UpdateDataSourceInput!): DataSource
+}
+
+type Query {
+  getDataSource(conversationId: String!): DataSource
+  listDataSources(
+    customerId: String!
+    filter: TableDataSourceFilterInput
+    limit: Int
+    nextToken: String
+  ): DataSourceConnection
+}
+
+type Subscription {
+  onCreateDataSource(conversationId: String): DataSource
+    @aws_subscribe(mutations: ["createDataSource"])
+  onUpdateDataSource(conversationId: String): DataSource
+    @aws_subscribe(mutations: ["updateDataSource"])
+}
